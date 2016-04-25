@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Virement compte a compte</title>
+</h:head>
+
+<h:body>
+	<p:panelGrid columns="2" id="panel">
+		<f:facet name="header">Comptes du clients</f:facet>
+		<p:panel header="Comptes Courant">
+			<p:dataTable
+				value="#{gestionCompte.serviceCompteCourant.selectAll()}"
+				var="compte" border="1">
+
+				<p:column>
+					<f:facet name="header">Id Compte</f:facet>
+					#{compte.id}
+				</p:column>
+				<p:column>
+					<f:facet name="header">date de creation</f:facet>
+					#{compte.dateCreation}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Solde</f:facet>
+					#{compte.solde}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Decouvert</f:facet>
+					#{compte.decouvert}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Actions</f:facet>
+					<h:form>
+						<p:commandButton value="source"
+							action="#{gestionCompte.initCompteSource('Courant',compte)}"
+							update=":panelVirement" />
+						<p:commandButton value="destination"
+							action="#{gestionCompte.initCompteDest('Courant',compte)}"
+							update=":panelVirement" />
+					</h:form>
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:panel header="Comptes Epargne">
+
+			<p:dataTable
+				value="#{gestionCompte.serviceCompteEpargne.selectAll()}"
+				var="compteEpargne" border="1">
+
+				<p:column>
+					<f:facet name="header">Id Compte</f:facet>
+					#{compteEpargne.id}
+				</p:column>
+				<p:column>
+					<f:facet name="header">date de creation</f:facet>
+					#{compteEpargne.dateCreation}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Solde</f:facet>
+					#{compteEpargne.solde}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Taux</f:facet>
+					#{compteEpargne.taux}
+				</p:column>
+				<p:column>
+					<f:facet name="header">Actions</f:facet>
+					<h:form>
+						<p:commandButton value="source"
+							action="#{gestionCompte.initCompteSource('Epargne',compteEpargne)}"
+							update=":panelVirement" />
+						<p:commandButton value="destination"
+							action="#{gestionCompte.initCompteDest('Epargne',compteEpargne)}"
+							update=":panelVirement" />
+					</h:form>
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+	</p:panelGrid>
+	<p:panel id="panelVirement">
+		<f:facet name="header">Virement</f:facet>
+		<h:form>
+			<p:panelGrid columns="2">
+				<h:outputText value="Id Compte Source :" />
+				<h:outputText value="#{gestionCompte.ccSource.id}" />
+				<h:outputText value="Solde Compte Source :" />
+				<h:outputText value="#{gestionCompte.ccSource.solde}" />
+				<h:outputText value="Id Compte Destination :" />
+				<h:outputText value="#{gestionCompte.ccDest.id}" />
+				<h:outputText value="Solde Compte destination :" />
+				<h:outputText value="#{gestionCompte.ccDest.solde}" />
+				<h:outputText value="Montant virement :"/>
+				<h:inputText value="#{gestionCompte.montantVirement}" />
+			</p:panelGrid>
+			<p:commandButton value="Lancer virement"
+					action="#{gestionCompte.virement()}" update="@all" />
+				<p:commandButton value="Annuler" action="#{gestionCompte.annulerOperation()}"
+				update="@all" />
+		</h:form>
+	</p:panel>
+
+</h:body>
+
+</html>

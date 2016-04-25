@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+  <title>Infos client individuel</title>
+</h:head>
+
+<h:body>
+	<h:form>
+	<label>Nom: </label><p:inputText name="nomClient" value="#{gestionClient.client.nom}"/>
+	<br/>
+	<label>Prénom:</label><p:inputText name="prenomClient" value="#{gestionClient.client.prenom}"/>
+	<br/>
+	<label>Adresse:</label><p:inputText name="adresse" value="#{gestionClient.client.adresse}"/>
+	<br/>
+	<label>Code Postal:</label><p:inputText name="codepostal" value="#{gestionClient.client.codePostal}"/>
+	<br/>
+	<label>Ville:</label><p:inputText name="nomClient" value="#{gestionClient.client.ville}"/>
+	<br/>
+	
+
+	<label>Id:</label><p:inputText name="idClient" value="#{gestionClient.id}"/>
+	<br/>
+
+	<p:commandButton value="afficher client" actionListener="#{gestionClient.clientById}" update="@all"/>
+	<p:commandButton value="modifier client" actionListener="#{gestionClient.modifierClient}"/>
+</h:form>
+</h:body>
+
+</html>
