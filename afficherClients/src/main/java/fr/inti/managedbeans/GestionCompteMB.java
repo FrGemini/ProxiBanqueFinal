@@ -10,13 +10,7 @@ import org.springframework.stereotype.Controller;
 
 
 
-
-
-
-
-
-
-import fr.inti.dao.IDaoCompteCourant;
+import fr.inti.entities.Client;
 import fr.inti.entities.CompteBancaire;
 import fr.inti.entities.CompteCourant;
 import fr.inti.entities.CompteEpargne;
@@ -31,7 +25,6 @@ public class GestionCompteMB implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	//private IDaoCompteCourant daoCompte;
 	private IServiceCompteCourant serviceCompteCourant;
 	
 	@Autowired
@@ -42,14 +35,22 @@ public class GestionCompteMB implements Serializable{
 	private CompteBancaire ccDest;
 	private String typeCompteSource;
 	private String typeCompteDestination;
+	private Client clientDebiter;
+	private Client clientCrediter;
 	
 	private float montantVirement;
+	private float montantRetrait;
+	private float montantDepot;
 	
 	public GestionCompteMB() {
 		super();
 		this.typeCompteDestination = "";
 		this.typeCompteSource = "";
 		this.montantVirement = 0;
+		this.montantRetrait = 0;
+		this.montantDepot = 0;
+		this.clientCrediter = new Client();
+		this.clientDebiter = new Client();
 	}
 	
 	
@@ -95,6 +96,27 @@ public class GestionCompteMB implements Serializable{
 	public void setMontantVirement(float montantVirement) {
 		this.montantVirement = montantVirement;
 	}
+	
+
+	public float getMontantRetrait() {
+		return montantRetrait;
+	}
+
+
+	public void setMontantRetrait(float montantRetrait) {
+		this.montantRetrait = montantRetrait;
+	}
+
+
+	public float getMontantDepot() {
+		return montantDepot;
+	}
+
+
+	public void setMontantDepot(float montantDepot) {
+		this.montantDepot = montantDepot;
+	}
+
 
 	public IServiceCompteCourant getServiceCompteCourant() {
 		return serviceCompteCourant;
@@ -108,11 +130,30 @@ public class GestionCompteMB implements Serializable{
 		return serviceCompteEpargne;
 	}
 	
+	public Client getClientDebiter() {
+		return clientDebiter;
+	}
+
+
+	public void setClientDebiter(Client clientDebiter) {
+		this.clientDebiter = clientDebiter;
+	}
+
+
+	public Client getClientCrediter() {
+		return clientCrediter;
+	}
+
+
+	public void setClientCrediter(Client clientCrediter) {
+		this.clientCrediter = clientCrediter;
+	}
+	
+	
 	/********** Methodes managed bean **********/
-	
-	
+
 	/**
-	 * initialisation du compte source en fonction du type de compte que l'on choisit
+	 * initialisation du compte débité en fonction du type de compte que l'on choisit
 	 * @param typeCompteSource
 	 * @param compte
 	 */
@@ -127,7 +168,7 @@ public class GestionCompteMB implements Serializable{
 	}
 	
 	/**
-	 * initialisation du compte destination en fonction du type de compte que l'on choisit
+	 * initialisation du compte crédité en fonction du type de compte que l'on choisit
 	 * @param typeCompteDestination
 	 * @param compte
 	 */
@@ -149,9 +190,30 @@ public class GestionCompteMB implements Serializable{
 		ccSource = null;
 		ccDest = null;
 		montantVirement = 0;
+		montantRetrait = 0;
+		clientCrediter = new Client();
+		clientDebiter = new Client();
+	}
+	
+	public void retrait(){
+		if (typeCompteSource.equals("Courant")){
+			serviceCompteCourant.takeMoney((CompteCourant)ccSource, montantRetrait);
+		} else {
+			serviceCompteEpargne.takeMoney((CompteEpargne)ccSource, montantRetrait);
+		}
+	}
+	
+	public void depot(){
+		if (typeCompteDestination.equals("Courant")){
+			serviceCompteCourant.addMoney((CompteCourant)ccDest, montantDepot);
+		} else {
+			serviceCompteEpargne.addMoney((CompteEpargne)ccDest, montantDepot);
+		}
 	}
 
 	public void virement(){
+		retrait();
+		depot();
 		System.out.println("type source : "+typeCompteSource);
 		if (typeCompteSource.equals("Courant")){
 			System.out.println("Source Compt Courant !!!");

@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Simulation Crédit</title>
+</h:head>
+<h:body>
+
+	<p:panel id="simulation">
+		<f:facet name="header">Simulation crédit consomation 1</f:facet>
+		<h:form>
+			<p:panelGrid columns="2">
+				<f:facet name="header">Infos crédit consomation</f:facet>
+				<h:outputLabel value="Montant :" />
+				<h:inputText value="#{WebServiceMB.montant}" />
+				<h:outputLabel value="Durée :" />
+				<h:inputText value="#{WebServiceMB.duree}" />
+				<h:outputLabel value="Teag :" />
+				<h:inputText value="#{WebServiceMB.teag}" />
+
+
+
+			</p:panelGrid>
+			<p:commandButton value="Lancer simulation"
+				action="#{WebServiceMB.simulation()}" update=":simulation" />
+		</h:form>
+		<p:panelGrid columns="2">
+			<f:facet name="header">Info crédit consomation</f:facet>
+			<h:outputText value="Mensualité :" />
+			<h:outputText value="#{WebServiceMB.mensualite}" />
+			<h:outputText value="Montant total :" />
+			<h:outputText value="#{WebServiceMB.montantTotal}" />
+			<h:outputText value="Montant total crédit :" />
+			<h:outputText value="#{WebServiceMB.montantTotalCredit}" />
+		</p:panelGrid>
+
+	</p:panel>
+
+	<p:panel id="simulation1">
+		<f:facet name="header">Simulation crédit consomation 1</f:facet>
+		<h:form>
+			<p:panelGrid columns="2">
+				<f:facet name="header">Infos crédit consomation 1</f:facet>
+				<h:outputLabel value="Mensualité :" />
+				<h:inputText value="#{WebServiceMB.mensualite1}" />
+				<h:outputLabel value="Durée :" />
+				<h:inputText value="#{WebServiceMB.duree1}" />
+				<h:outputLabel value="Teag :" />
+				<h:inputText value="#{WebServiceMB.teag1}" />
+			</p:panelGrid>
+			<p:commandButton value="Lancer simulation"
+				action="#{WebServiceMB.simulation1()}" update=":simulation1" />
+		</h:form>
+		<p:panelGrid columns="2">
+			<f:facet name="header">Resultats crédit consomation 1</f:facet>
+			<h:outputText value="Capital :" />
+			<h:outputText value="#{WebServiceMB.capital}" />
+			<h:outputText value="Montant total crédit :" />
+			<h:outputText value="#{WebServiceMB.montantTotalCredit1}" />
+		</p:panelGrid>
+
+	</p:panel>
+</h:body>
+</html>

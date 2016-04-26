@@ -1,108 +1,285 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Virement compte a compte</title>
 </h:head>
 
 <h:body>
-	<p:panelGrid columns="2" id="panel">
-		<f:facet name="header">Comptes du clients</f:facet>
-		<p:panel header="Comptes Courant">
-			<p:dataTable
-				value="#{gestionCompte.serviceCompteCourant.selectAll()}"
-				var="compte" border="1">
+	<p:dataTable value="#{gestionClient.clients}" var="client" border="1">
 
-				<p:column>
-					<f:facet name="header">Id Compte</f:facet>
-					#{compte.id}
-				</p:column>
-				<p:column>
-					<f:facet name="header">date de creation</f:facet>
-					#{compte.dateCreation}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Solde</f:facet>
-					#{compte.solde}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Decouvert</f:facet>
-					#{compte.decouvert}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Actions</f:facet>
-					<h:form>
-						<p:commandButton value="source"
-							action="#{gestionCompte.initCompteSource('Courant',compte)}"
-							update=":panelVirement" />
-						<p:commandButton value="destination"
-							action="#{gestionCompte.initCompteDest('Courant',compte)}"
-							update=":panelVirement" />
-					</h:form>
-				</p:column>
-			</p:dataTable>
+		<p:column>
+			<f:facet name="header">Id Client</f:facet>
+				#{client.clientId}
+			</p:column>
+
+		<p:column>
+			<f:facet name="header">Nom</f:facet>
+				#{client.nom}
+			</p:column>
+
+		<p:column>
+			<f:facet name="header">Prenom</f:facet>
+				#{client.prenom}
+			</p:column>
+
+		<p:column>
+			<f:facet name="header">Compte Courant</f:facet>
+				#{client.cc.id}
+			</p:column>
+
+
+		<p:column>
+			<f:facet name="header">Compte Epargne</f:facet>
+				#{client.ce.id}
+			</p:column>
+
+
+		<p:column>
+			<f:facet name="header">Action</f:facet>
+			<h:form>
+				<p:commandButton value="Debiter"
+					action="#{gestionCompte.setClientDebiter(client)}" update=":panel" />
+				<p:commandButton value="Crediter"
+					action="#{gestionCompte.setClientCrediter(client)}" update=":panel" />
+				<p:commandButton value="Retrait"
+					action="#{gestionCompte.setClientDebiter(client)}"
+					update=":Retrait" />
+				<p:commandButton value="Depot"
+					action="#{gestionCompte.setClientCrediter(client)}" update=":depot" />
+			</h:form>
+		</p:column>
+	</p:dataTable>
+	<br />
+	<br />
+	<br />
+
+	<p:panel id="panel" header="Comptes des clients selectionnés pour le virement">
+		<p:panel header="Comptes du client a debiter">
+			<p:panelGrid columns="5">
+				<f:facet name="header">Compte Courant</f:facet>
+				<h:outputLabel value="Id compte" />
+				<h:outputLabel value="Date de creation" />
+				<h:outputLabel value="Solde" />
+				<h:outputLabel value="Decouvert" />
+				<h:outputLabel value="Debiter" />
+				<h:outputText value="#{gestionCompte.clientDebiter.cc.id}" />
+				<h:outputText value="#{gestionCompte.clientDebiter.cc.dateCreation}" />
+				<h:outputText value="#{gestionCompte.clientDebiter.cc.solde}" />
+				<h:outputText value="#{gestionCompte.clientDebiter.cc.decouvert}" />
+				<h:form>
+					<p:commandButton value="source"
+						action="#{gestionCompte.initCompteSource('Courant',gestionCompte.clientDebiter.cc)}"
+						update=":panelVirement" />
+				</h:form>
+			</p:panelGrid>
+
+			<p:panelGrid columns="5">
+				<f:facet name="header">Compte Epargne</f:facet>
+				<h:outputLabel value="Id compte" />
+				<h:outputLabel value="Date de creation" />
+				<h:outputLabel value="Solde" />
+				<h:outputLabel value="Taux" />
+				<h:outputLabel value="Debiter" />
+				<h:outputText value="#{gestionCompte.clientDebiter.ce.id}" />
+				<h:outputText value="#{gestionCompte.clientDebiter.ce.dateCreation}" />
+				<h:outputText value="#{gestionCompte.clientDebiter.ce.solde}" />
+				<h:outputText value="#{gestionCompte.clientDebiter.ce.taux}" />
+				<h:form>
+					<p:commandButton value="source"
+						action="#{gestionCompte.initCompteSource('Epargne',gestionCompte.clientDebiter.ce)}"
+						update=":panelVirement" />
+				</h:form>
+			</p:panelGrid>
 		</p:panel>
-		<p:panel header="Comptes Epargne">
+		<p:panel header="Comptes du client a crediter">
+			<p:panelGrid columns="5">
+				<f:facet name="header">Compte Courant</f:facet>
+				<h:outputLabel value="Id compte" />
+				<h:outputLabel value="Date de creation" />
+				<h:outputLabel value="Solde" />
+				<h:outputLabel value="Decouvert" />
+				<h:outputLabel value="Debiter" />
+				<h:outputText value="#{gestionCompte.clientCrediter.cc.id}" />
+				<h:outputText
+					value="#{gestionCompte.clientCrediter.cc.dateCreation}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.cc.solde}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.cc.decouvert}" />
+				<h:form>
+					<p:commandButton value="destination"
+						action="#{gestionCompte.initCompteDest('Courant',gestionCompte.clientCrediter.cc)}"
+						update=":panelVirement" />
+				</h:form>
+			</p:panelGrid>
 
-			<p:dataTable
-				value="#{gestionCompte.serviceCompteEpargne.selectAll()}"
-				var="compteEpargne" border="1">
+			<p:panelGrid columns="5">
+				<f:facet name="header">Compte Epargne</f:facet>
+				<h:outputLabel value="Id compte" />
+				<h:outputLabel value="Date de creation" />
+				<h:outputLabel value="Solde" />
+				<h:outputLabel value="Taux" />
+				<h:outputLabel value="Debiter" />
+				<h:outputText value="#{gestionCompte.clientCrediter.ce.id}" />
+				<h:outputText
+					value="#{gestionCompte.clientCrediter.ce.dateCreation}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.ce.solde}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.ce.taux}" />
+				<h:form>
+					<p:commandButton value="destination"
+						action="#{gestionCompte.initCompteDest('Epargne',gestionCompte.clientCrediter.ce)}"
+						update=":panelVirement" />
+				</h:form>
+			</p:panelGrid>
 
-				<p:column>
-					<f:facet name="header">Id Compte</f:facet>
-					#{compteEpargne.id}
-				</p:column>
-				<p:column>
-					<f:facet name="header">date de creation</f:facet>
-					#{compteEpargne.dateCreation}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Solde</f:facet>
-					#{compteEpargne.solde}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Taux</f:facet>
-					#{compteEpargne.taux}
-				</p:column>
-				<p:column>
-					<f:facet name="header">Actions</f:facet>
-					<h:form>
-						<p:commandButton value="source"
-							action="#{gestionCompte.initCompteSource('Epargne',compteEpargne)}"
-							update=":panelVirement" />
-						<p:commandButton value="destination"
-							action="#{gestionCompte.initCompteDest('Epargne',compteEpargne)}"
-							update=":panelVirement" />
-					</h:form>
-				</p:column>
-
-			</p:dataTable>
 		</p:panel>
-	</p:panelGrid>
-	<p:panel id="panelVirement">
-		<f:facet name="header">Virement</f:facet>
+
+		<p:panel id="panelVirement">
+			<h:form>
+				<p:panelGrid columns="2">
+					<f:facet name="header">Virement</f:facet>
+					<h:outputText value="Id Compte Source :" />
+					<h:outputText value="#{gestionCompte.ccSource.id}" />
+					<h:outputText value="Solde Compte Source :" />
+					<h:outputText value="#{gestionCompte.ccSource.solde}" />
+					<h:outputText value="Id Compte Destination :" />
+					<h:outputText value="#{gestionCompte.ccDest.id}" />
+					<h:outputText value="Solde Compte destination :" />
+					<h:outputText value="#{gestionCompte.ccDest.solde}" />
+					<h:outputText value="Montant virement :" />
+					<h:inputText value="#{gestionCompte.montantVirement}" />
+					<p:commandButton value="Lancer virement"
+						action="#{gestionCompte.virement()}" update="@all" />
+					<p:commandButton value="Annuler"
+						action="#{gestionCompte.annulerOperation()}" update="@all" />
+				</p:panelGrid>
+
+			</h:form>
+		</p:panel>
+	</p:panel>
+	<br />
+	<br />
+	<br />
+
+
+
+
+
+	<p:panelGrid columns="2" id="Retrait">
+		<f:facet name="header">Comptes du client qui veut faire un retrait </f:facet>
+		<p:panelGrid columns="5">
+			<f:facet name="header">Compte Courant</f:facet>
+			<h:outputLabel value="Id compte" />
+			<h:outputLabel value="Date de creation" />
+			<h:outputLabel value="Solde" />
+			<h:outputLabel value="Decouvert" />
+			<h:outputLabel value="Debiter" />
+			<h:outputText value="#{gestionCompte.clientDebiter.cc.id}" />
+			<h:outputText value="#{gestionCompte.clientDebiter.cc.dateCreation}" />
+			<h:outputText value="#{gestionCompte.clientDebiter.cc.solde}" />
+			<h:outputText value="#{gestionCompte.clientDebiter.cc.decouvert}" />
+			<h:form>
+				<p:commandButton value="source"
+					action="#{gestionCompte.initCompteSource('Courant',gestionCompte.clientDebiter.cc)}"
+					update=":Retrait" />
+			</h:form>
+		</p:panelGrid>
+
+		<p:panelGrid columns="5">
+			<f:facet name="header">Compte Epargne</f:facet>
+			<h:outputLabel value="Id compte" />
+			<h:outputLabel value="Date de creation" />
+			<h:outputLabel value="Solde" />
+			<h:outputLabel value="Taux" />
+			<h:outputLabel value="Debiter" />
+			<h:outputText value="#{gestionCompte.clientDebiter.ce.id}" />
+			<h:outputText value="#{gestionCompte.clientDebiter.ce.dateCreation}" />
+			<h:outputText value="#{gestionCompte.clientDebiter.ce.solde}" />
+			<h:outputText value="#{gestionCompte.clientDebiter.ce.taux}" />
+			<h:form>
+				<p:commandButton value="source"
+					action="#{gestionCompte.initCompteSource('Epargne',gestionCompte.clientDebiter.ce)}"
+					update=":Retrait" />
+			</h:form>
+		</p:panelGrid>
+
 		<h:form>
 			<p:panelGrid columns="2">
+				<f:facet name="header">Info Retrait</f:facet>
 				<h:outputText value="Id Compte Source :" />
 				<h:outputText value="#{gestionCompte.ccSource.id}" />
 				<h:outputText value="Solde Compte Source :" />
 				<h:outputText value="#{gestionCompte.ccSource.solde}" />
-				<h:outputText value="Id Compte Destination :" />
-				<h:outputText value="#{gestionCompte.ccDest.id}" />
-				<h:outputText value="Solde Compte destination :" />
-				<h:outputText value="#{gestionCompte.ccDest.solde}" />
-				<h:outputText value="Montant virement :"/>
-				<h:inputText value="#{gestionCompte.montantVirement}" />
+				<h:outputText value="Montant retrait :" />
+				<h:inputText value="#{gestionCompte.montantRetrait}" />
+				<p:commandButton value="Lancer retrait"
+					action="#{gestionCompte.retrait()}" update="@all" />
+				<p:commandButton value="Annuler"
+					action="#{gestionCompte.annulerOperation()}" update="@all" />
 			</p:panelGrid>
-			<p:commandButton value="Lancer virement"
-					action="#{gestionCompte.virement()}" update="@all" />
-				<p:commandButton value="Annuler" action="#{gestionCompte.annulerOperation()}"
-				update="@all" />
 		</h:form>
+	</p:panelGrid>
+	<p:panel id="panelDepot">
+		<p:panelGrid columns="2" id="depot">
+			<f:facet name="header">Comptes du client qui veut faire un dépôt</f:facet>
+			<p:panelGrid columns="5">
+				<f:facet name="header">Compte Courant</f:facet>
+				<h:outputLabel value="Id compte" />
+				<h:outputLabel value="Date de creation" />
+				<h:outputLabel value="Solde" />
+				<h:outputLabel value="Decouvert" />
+				<h:outputLabel value="Debiter" />
+				<h:outputText value="#{gestionCompte.clientCrediter.cc.id}" />
+				<h:outputText
+					value="#{gestionCompte.clientCrediter.cc.dateCreation}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.cc.solde}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.cc.decouvert}" />
+				<h:form>
+					<p:commandButton value="Destination"
+						action="#{gestionCompte.initCompteDest('Courant',gestionCompte.clientclientCrediter.cc)}"
+						update=":panelDepot" />
+				</h:form>
+			</p:panelGrid>
+
+			<p:panelGrid columns="5">
+				<f:facet name="header">Compte Epargne</f:facet>
+				<h:outputLabel value="Id compte" />
+				<h:outputLabel value="Date de creation" />
+				<h:outputLabel value="Solde" />
+				<h:outputLabel value="Taux" />
+				<h:outputLabel value="Crediter" />
+				<h:outputText value="#{gestionCompte.clientCrediter.ce.id}" />
+				<h:outputText
+					value="#{gestionCompte.clientCrediter.ce.dateCreation}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.ce.solde}" />
+				<h:outputText value="#{gestionCompte.clientCrediter.ce.taux}" />
+				<h:form>
+					<p:commandButton value="Destination"
+						action="#{gestionCompte.initCompteDest('Epargne',gestionCompte.clientCrediter.ce)}"
+						update=":panelDepot" />
+				</h:form>
+			</p:panelGrid>
+
+			<h:form>
+				<p:panelGrid columns="2">
+					<f:facet name="header">Info Dépôt</f:facet>
+					<h:outputText value="Id Compte Source :" />
+					<h:outputText value="#{gestionCompte.ccDest.id}" />
+					<h:outputText value="Solde Compte Source :" />
+					<h:outputText value="#{gestionCompte.ccDest.solde}" />
+					<h:outputText value="Montant retrait :" />
+					<h:inputText value="#{gestionCompte.montantDepot}" />
+					<p:commandButton value="Lancer depot"
+						action="#{gestionCompte.depot()}" update="@all" />
+					<p:commandButton value="Annuler"
+						action="#{gestionCompte.annulerOperation()}" update="@all" />
+				</p:panelGrid>
+			</h:form>
+		</p:panelGrid>
 	</p:panel>
+
 
 </h:body>
 
