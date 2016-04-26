@@ -53,7 +53,9 @@ public class Client implements Serializable {
 	@OneToOne(mappedBy="client", orphanRemoval=true)
 	protected CompteEpargne ce;
 	
-	private Conseiller conseiller;
+	@ManyToOne
+	@JoinColumn (name="id_conseiller")
+	private Conseiller conseiller;;
 
 	
 	

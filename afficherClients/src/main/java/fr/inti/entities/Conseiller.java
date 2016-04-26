@@ -1,10 +1,12 @@
 package fr.inti.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,8 +34,8 @@ public class Conseiller implements Serializable {
 	@Column(name="agence")
 	private String agence;
 	
-	@OneToMany(mappedBy="conseiller")
-	private Set<Client> clients;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="conseiller")
+	private Set<Client> clients= new HashSet<Client>();
 
 	public int getConseillerId() {
 		return conseillerId;
