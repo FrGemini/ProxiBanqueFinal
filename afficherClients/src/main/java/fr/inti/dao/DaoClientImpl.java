@@ -60,7 +60,7 @@ public class DaoClientImpl extends HibernateDaoSupport implements IDaoClient {
 	}
 
 	public List<Client> getClientsByConseiller(int id) {
-		return getSession().createQuery("FROM Client WHERE Client.conseiller=?").setParameter(0, id).list();
+		return getSession().createQuery("SELECT client FROM Client WHERE Client.conseiller_id_conseiller=?").setParameter(0, id).list();
 	}
 
 }

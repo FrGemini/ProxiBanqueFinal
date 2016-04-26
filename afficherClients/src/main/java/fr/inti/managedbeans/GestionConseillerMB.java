@@ -1,5 +1,6 @@
 package fr.inti.managedbeans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +24,21 @@ public class GestionConseillerMB {
 	private IServiceClient serviceClient;
 	
 	private List<Conseiller> conseillers;
+	private List<Client> clients;
+	
+	public List<Client> getClients() {
+		if(conseiller!=null){
+		return serviceClient.listeClientByConseiller(conseiller.getConseillerId());
+		}
+		else{
+			return serviceClient.listeClientByConseiller(1);
+		}
+	}
+
+	public void setClients(List<Client> clients) {
+		this.clients = clients;
+	}
+
 	private Conseiller conseiller;
 	private int id;
 
@@ -42,6 +58,7 @@ public class GestionConseillerMB {
 	@PostConstruct
 	public void init(){
 		this.conseiller=new Conseiller();
+		this.clients=new ArrayList<Client>();
 	}
 	
 	public Conseiller getConseiller() {
@@ -73,9 +90,6 @@ public class GestionConseillerMB {
 		
 	}
 	
-	public List<Client> clientParConseiller(){
-		
-	}
 	
 	
 }

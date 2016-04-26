@@ -39,7 +39,7 @@
 				<h:form>
 					<p:commandButton value="supprimer" />
 					<p:commandButton value="modifier" actionListener="#{gestionConseiller.conseillerParId(conseiller.conseillerId)}" update="@all"/>
-					<p:commandButton value="fiche du conseiller" />
+					<p:commandButton value="fiche du conseiller" actionListener="PF.('popin').show()"/>
 				</h:form>
 			</p:column>
 		</p:dataTable>
@@ -77,4 +77,25 @@
 	</h:form>
 </h:body>
 
+<p:dialog widgetVar="popin" modal="true">
+	<p:dataTable value="#{gestionConseiller.clients}" var="client"
+		border="1">
+
+		<p:column>
+			<f:facet name="header">Id client</f:facet>
+				#{client.clientId}
+			</p:column>
+
+		<p:column>
+			<f:facet name="header">Nom</f:facet>
+				#{client.nom}
+			</p:column>
+
+		<p:column>
+			<f:facet name="header">Prenom</f:facet>
+				#{conseiller.prenom}
+			</p:column>
+
+	</p:dataTable>
+</p:dialog>
 </html>
