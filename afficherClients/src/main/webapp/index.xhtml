@@ -13,29 +13,58 @@
 
 <h:body>
 	<p:panel id="login" header="Bienvenue sur le site de ProxyBanque">
+		<p>
+			<img
+				src="https://pbs.twimg.com/profile_images/996881807/gagner-plus-d-argent.jpeg"
+				alt="monney" /> 
+			<img
+				src="https://pbs.twimg.com/profile_images/996881807/gagner-plus-d-argent.jpeg"
+				alt="monney" /> 
+			<img
+				src="https://pbs.twimg.com/profile_images/996881807/gagner-plus-d-argent.jpeg"
+				alt="monney" />
+		</p>
 		<h:form>
-			<p:commandButton value="Gérant" action="PagePourGerant.xhtml" />
-			<p:commandButton value="Conseiller" onclick="PF('popin').show()" />
+			<p:commandButton value="Gérant" onclick="PF('gerant').show()" />
+			<p:commandButton value="Conseiller" onclick="PF('conseiller').show()" />
 		</h:form>
 		<h:form>
-			<p:dialog widgetVar="popin" modal="true">
+			<p:dialog widgetVar="conseiller" modal="true">
 				<p:panel id="infoConseiller">
 					<label>Id : </label>
-					<p:inputText value="#{gestionClient.conseiller.conseillerId}"/>
+					<p:inputText value="#{gestionClient.conseiller.conseillerId}" />
 					<br />
 					<label>Nom : </label>
-					<p:inputText value="#{gestionClient.conseiller.nom}"/>
+					<p:inputText value="#{gestionClient.conseiller.nom}" />
 					<br />
 					<label>Prenom : </label>
-					<p:inputText value="#{gestionClient.conseiller.prenom}"/>
+					<p:inputText value="#{gestionClient.conseiller.prenom}" />
 
-					<br/>
+					<br />
 					<label>Agence : </label>
-					<p:inputText value="#{gestionClient.conseiller.agence}"/>
+					<p:inputText value="#{gestionClient.conseiller.agence}" />
 					<br />
 					<p:messages autoUpdate="true" />
-					<p:commandButton value="Connexion" 
-						action="ListeClients.xhtml" />
+					<p:commandButton value="Connexion" action="ListeClients.xhtml" />
+				</p:panel>
+			</p:dialog>
+		</h:form>
+
+		<h:form>
+			<p:dialog widgetVar="gerant" modal="true">
+				<p:panel id="infoGerant">
+					<label>Id : </label>
+					<p:inputText />
+					<br />
+					<label>Nom : </label>
+					<p:inputText />
+					<br />
+					<label>Prenom : </label>
+					<p:inputText />
+
+					<br />
+					<p:messages autoUpdate="true" />
+					<p:commandButton value="Connexion" action="PagePourGerant.xhtml" />
 				</p:panel>
 			</p:dialog>
 		</h:form>
