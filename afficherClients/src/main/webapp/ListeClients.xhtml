@@ -11,19 +11,10 @@
 <h:body>
 
 	<h:form>
-		<p:growl id="messages" />
-
-		<p:menubar>
-			<p:submenu label="Gestion des Clients"   outcome="ListeClients.xhtml"/>
-			<p:menuitem></p:menuitem>
-			<p:submenu label="Gestion des comptes des Clients"  outcome="VirementCompteACompte.xhtml"/>
-			<p:submenu label="Simulation de crédit"  outcome="http://localhost:8181/afficherClients/faces/WebServiceView.xhtml"/>
-
-
-			<f:facet name="options">
-				<p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
-			</f:facet>
-		</p:menubar>
+			<p:commandButton value="Gestion des Clients" action="ListeClients.xhtml" />
+			<p:commandButton value="Gestion des comptes des Clients" action="VirementCompteACompte.xhtml" />
+			<p:commandButton value="Simulation de crédit" action="WebServiceView.xhtml" />
+			<p:commandButton value="Logout" action="index.xhtml" />
 	</h:form>
 	<br/>
 	<h:form id="formulaire">

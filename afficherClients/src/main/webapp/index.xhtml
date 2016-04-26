@@ -14,32 +14,27 @@
 <h:body>
 	<p:panel id="login" header="Bienvenue sur le site de ProxyBanque">
 		<h:form>
-			<p:commandButton value="Gérant" action="Page¨PourGerant.xhtml" />
+			<p:commandButton value="Gérant" action="PagePourGerant.xhtml" />
 			<p:commandButton value="Conseiller" onclick="PF('popin').show()" />
 		</h:form>
 		<h:form>
 			<p:dialog widgetVar="popin" modal="true">
 				<p:panel id="infoConseiller">
 					<label>Id : </label>
-					<p:inputText value="#{gestionClient.conseiller.conseillerId}"
-						validatorMessage="Le nom doit faire au moins 2 caractères">
-						<f:validateLength minimum="2" />
-					</p:inputText>
+					<p:inputText value="#{gestionClient.conseiller.conseillerId}"/>
 					<br />
 					<label>Nom : </label>
-					<p:inputText value="#{gestionClient.conseiller.nom}"
-						validatorMessage="Le nom doit faire au moins 2 caractères">
-						<f:validateLength minimum="2" />
-					</p:inputText>
+					<p:inputText value="#{gestionClient.conseiller.nom}"/>
 					<br />
 					<label>Prenom : </label>
-					<p:inputText value="#{gestionClient.conseiller.prenom}"
-						validatorMessage="Le prenom doit faire au moins 2 caractères">
-						<f:validateLength minimum="2" />
-					</p:inputText>
+					<p:inputText value="#{gestionClient.conseiller.prenom}"/>
+
+					<br/>
+					<label>Agence : </label>
+					<p:inputText value="#{gestionClient.conseiller.agence}"/>
 					<br />
 					<p:messages autoUpdate="true" />
-					<p:commandButton value="Connexion" validateClient="true"
+					<p:commandButton value="Connexion" 
 						action="ListeClients.xhtml" />
 				</p:panel>
 			</p:dialog>

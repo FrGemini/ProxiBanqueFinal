@@ -9,6 +9,14 @@
 </h:head>
 
 <h:body>
+	<h:form>
+			<p:commandButton value="Gestion des Clients" action="ListeClients.xhtml" />
+			<p:commandButton value="Gestion des comptes des Clients" action="VirementCompteACompte.xhtml" />
+			<p:commandButton value="Simulation de crédit" action="WebServiceView.xhtml" />
+			<p:commandButton value="Logout" action="index.xhtml" />
+	</h:form>
+	<br/>
+	
 	<p:dataTable value="#{gestionClient.clients}" var="client" border="1">
 
 		<p:column>
