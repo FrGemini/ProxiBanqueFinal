@@ -70,7 +70,7 @@
 			<p:inputText name="prénom" value="#{gestionConseiller.conseiller.prenom}"/>
 			<h:outputText value="Agence :" />
 			<p:inputText name="agence" value="#{gestionConseiller.conseiller.agence}"/>
-			<p:commandButton value="sauvegarder Modification" />
+			<p:commandButton value="sauvegarder Modification" actionListener="#{gestionConseiller.modifier}" update="@all"/>
 			<p:commandButton value="annuler" />
 
 		</p:panelGrid>

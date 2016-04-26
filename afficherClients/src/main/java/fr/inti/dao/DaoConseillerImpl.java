@@ -36,4 +36,11 @@ public class DaoConseillerImpl implements IDaoConseiller{
 		return retour;
 	}
 
+	public void updateConseiller(Conseiller conseiller) {
+		getSession().update(conseiller);
+		
+	}
+	
+
+
 }

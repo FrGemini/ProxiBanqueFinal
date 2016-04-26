@@ -27,5 +27,9 @@ public class ServiceConseillerImpl implements IServiceConseiller{
 		return daoConseiller.getConseillerById(id);
 	}
 	
+	public void modifierConseiller(Conseiller conseiller){
+		daoConseiller.updateConseiller(conseiller);
+	}
+	
 	
 }

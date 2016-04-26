@@ -10,4 +10,5 @@ public interface IDaoConseiller {
 	List<Conseiller> getAllConseillers();
 	Conseiller getConseillerById(int id);
 	void addConseiller(Conseiller conseiller); 
+	void updateConseiller(Conseiller conseiller);
 }

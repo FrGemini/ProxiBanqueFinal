@@ -9,4 +9,5 @@ public interface IServiceConseiller {
 	List<Conseiller> listeConseillers();
 	void ajouterConseiller(Conseiller conseiller);
 	Conseiller getConseillerById(int id);
+	void modifierConseiller(Conseiller conseiller); 
 }

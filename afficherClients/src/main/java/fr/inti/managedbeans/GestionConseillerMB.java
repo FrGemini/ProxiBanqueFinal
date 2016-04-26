@@ -63,4 +63,9 @@ public class GestionConseillerMB {
 	public void ajouter(){
 		serviceConseiller.ajouterConseiller(conseiller);
 	}
+	
+	public void modifier(){
+		serviceConseiller.modifierConseiller(conseiller);
+		
+	}
 }
