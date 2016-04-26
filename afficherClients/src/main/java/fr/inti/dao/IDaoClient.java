@@ -11,5 +11,6 @@ public interface IDaoClient {
 	Client getClientById(int id);
 	void deleteClient(Client client);
 	void updateClient(Client client);
+	List<Client> getClientsByConseiller(int id);
 
 }

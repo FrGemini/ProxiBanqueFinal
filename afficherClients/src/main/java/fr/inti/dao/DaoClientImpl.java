@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import fr.inti.entities.Client;
+import fr.inti.entities.CompteCourant;
 
 @Repository
 @Transactional
@@ -19,8 +20,11 @@ public class DaoClientImpl extends HibernateDaoSupport implements IDaoClient {
 
 	@Autowired
 	private SessionFactory sessionFactory;
-
 	
+	private Session getSession() {
+		return sessionFactory.getCurrentSession();
+	}
+
 	public List<Client> getAllClients() {
 		String reqHqlGetAll = "FROM Client";
 		List<Client> clientList = (List<Client>) getHibernateTemplate().find(
@@ -29,7 +33,7 @@ public class DaoClientImpl extends HibernateDaoSupport implements IDaoClient {
 	}
 
 	public void addClient(Client client) {
-		
+
 		sessionFactory.getCurrentSession().save(client);
 	}
 
@@ -53,6 +57,10 @@ public class DaoClientImpl extends HibernateDaoSupport implements IDaoClient {
 	public void updateClient(Client client) {
 		sessionFactory.getCurrentSession().update(client);
 
+	}
+
+	public List<Client> getClientsByConseiller(int id) {
+		return getSession().createQuery("FROM Colient WHERE Client.conseiller=?").setParameter(0, id).list();
 	}
 
 }

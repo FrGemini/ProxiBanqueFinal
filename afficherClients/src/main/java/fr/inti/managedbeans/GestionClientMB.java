@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import fr.inti.dao.DaoClientImpl;
 import fr.inti.dao.IDaoClient;
 import fr.inti.entities.Client;
+import fr.inti.entities.Conseiller;
 import fr.inti.services.IServiceClient;
 
 @Controller(value="gestionClient")
@@ -28,38 +27,32 @@ public class GestionClientMB implements Serializable{
 	private IServiceClient serviceClient;
 	private Client client;
 	private int id;
+	private Client selectedClient;
+	private Conseiller conseiller;
 	
-	
-	
-	
+	/******** Constructor ********/
 
-
-
-
-
-	public int getId() {
-		return id;
+	public GestionClientMB() {
+		super();	
 	}
 
+    @PostConstruct
+    public void init() {
+    	this.client = new Client();
+    	this.selectedClient = new Client();
+    	this.conseiller = new Conseiller();
+		this.id=0;
+    }
+    
+    /******** Getter - Setter ********/
+    
+    public int getId() {
+		return id;
+	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
-	public GestionClientMB() {
-		super();
-		
-		
-	}
-
-
-    @PostConstruct
-    public void init() {
-    	this.client=new Client();
-		this.id=0;
-    }
-
 	
 	public List<Client> getClients(){
 		return serviceClient.listeClient();
@@ -79,20 +72,49 @@ public class GestionClientMB implements Serializable{
 		this.client = client;
 	}
 	
+	
+	public Client getSelectedClient() {
+		return selectedClient;
+	}
+
+
+	public void setSelectedClient(Client selectedClient) {
+		Client client = new Client(
+                selectedClient.getNom(),
+                selectedClient.getPrenom(),
+                selectedClient.getAdresse(),
+                selectedClient.getCodePostal(),
+                selectedClient.getVille(),
+                selectedClient.getTelephone()
+                );
+		client.setClientId(selectedClient.getClientId());
+        this.selectedClient = client;
+	}
+
+	public Conseiller getConseiller() {
+		return conseiller;
+	}
+
+	public void setConseiller(Conseiller conseiller) {
+		this.conseiller = conseiller;
+	}
+
+	/******* Methode Bean ********/
+	
 	public void addClient(){
+		//client.setConseiller(conseiller);
 		serviceClient.ajouterClient(client);
 	}
 	
 	public void clientById(){
 		setClient(daoClient.getClientById(id));
 	}
-	
-	public void effacerClient(Client cli){
-		serviceClient.supprimerClient(cli);
+
+	public void effacerClient(){
+		serviceClient.supprimerClient(selectedClient);
 	}
 	
 	public void modifierClient(){
-		client.setClientId(id);
-		serviceClient.modifierClient(client);
+		serviceClient.modifierClient(selectedClient);
 	}
 }

@@ -11,4 +11,5 @@ public interface IServiceClient {
 	void ajouterClient(Client client);
 	void modifierClient(Client client);
 	void supprimerClient(Client client);
+	List<Client> listeClientByConseiller(int id);
 }

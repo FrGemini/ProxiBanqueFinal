@@ -54,6 +54,12 @@ public class ServiceClientImpl implements IServiceClient{
 		daoClient.deleteClient(client);
 		
 	}
+
+
+
+	public List<Client> listeClientByConseiller(int id) {
+		return daoClient.getClientsByConseiller(id);
+	}
 	
 
 

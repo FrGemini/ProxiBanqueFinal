@@ -9,80 +9,141 @@
 </h:head>
 
 <h:body>
-	<p:outputPanel id="panel">
-		<p:dataTable value="#{gestionClient.clients}" var="client" border="1">
 
-			<p:column>
-				<f:facet name="Header">Id Client</f:facet>
+	<h:form>
+		<p:growl id="messages" />
+
+		<p:menubar>
+			<p:submenu label="Gestion des Clients"   outcome="ListeClients.xhtml"/>
+			<p:menuitem></p:menuitem>
+			<p:submenu label="Gestion des comptes des Clients"  outcome="VirementCompteACompte.xhtml"/>
+			<p:submenu label="Simulation de crédit"  outcome="http://localhost:8181/afficherClients/faces/WebServiceView.xhtml"/>
+
+
+			<f:facet name="options">
+				<p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+	<br/>
+	<h:form id="formulaire">
+		<p:contextMenu for="tableauClients">
+			<p:menuitem>
+				<p:commandLink actionListener="#{gestionClient.effacerClient}"
+					update="tableauClients" value="Supprimer">
+					<p:confirm header="Confirmer"
+						message="Voulez vous vraiment supprimer ce client ?" />
+				</p:commandLink>
+			</p:menuitem>
+			<p:menuitem value="Editer" oncomplete="PF('popin').show()" />
+		</p:contextMenu>
+
+		<p:confirmDialog global="true">
+			<p:commandButton value="Oui" type="button"
+				styleClass="ui-confirmdialog-yes" />
+			<p:commandButton value="Non" type="button"
+				styleClass="ui-confirmdialog-no" />
+		</p:confirmDialog>
+
+		<p:dataTable id="tableauClients" value="#{gestionClient.clients}"
+			var="client" paginator="true" rows="5"
+			selection="#{gestionClient.selectedClient}" selectionMode="single"
+			rowKey="#{client.clientId}">
+			<p:ajax event="contextMenu" update=":formulaire:infoClient" />
+
+			<p:column headerText="Id Client" sortBy="#{client.clientId}">
 				#{client.clientId}
 			</p:column>
 
-			<p:column>
-				<f:facet name="header">Nom</f:facet>
+			<p:column headerText="Nom" sortBy="#{client.nom}">
 				#{client.nom}
 			</p:column>
 
-			<p:column>
-				<f:facet name="header">Prenom</f:facet>
+			<p:column headerText="Prenom" sortBy="#{client.prenom}">
 				#{client.prenom}
 			</p:column>
 
-			<p:column>
-				<f:facet name="header">Adresse</f:facet>
+			<p:column headerText="Adresse" sortBy="#{client.adresse}">
 				#{client.adresse}
 			</p:column>
 
-
-			<p:column>
-				<f:facet name="header">Code Postal</f:facet>
+			<p:column headerText="Code postal" sortBy="#{client.codePostal}">
 				#{client.codePostal}
 			</p:column>
-			<p:column>
-				<f:facet name="header">Ville</f:facet>
+
+			<p:column headerText="Ville" sortBy="#{client.ville}">
 				#{client.ville}
 			</p:column>
 
-
-			<p:column>
-				<f:facet name="header">Téléphone</f:facet>
+			<p:column headerText="ITelephone">
 				#{client.telephone}
 			</p:column>
-			
-			<p:column>
-				<f:facet name="header">Effacer</f:facet>
-				<h:form>
-					<p:commandButton value="x" action="#{gestionClient.effacerClient(client)}" update=":panel"/>
-				</h:form>
-			</p:column>
 		</p:dataTable>
-	</p:outputPanel>
 
-	<h:form>
-		<label>Nom:</label>
-		<p:inputText name="nom" value="#{gestionClient.client.nom}" />
-		<br />
-		<label>prénom:</label>
-		<p:inputText name="prénom" value="#{gestionClient.client.prenom}" />
-		<br />
-		<label>adresse:</label>
-		<p:inputText name="adresse" value="#{gestionClient.client.adresse}" />
-		<br />
-		<label>code postal:</label>
-		<p:inputText name="code postal"
-			value="#{gestionClient.client.codePostal}" />
-		<br />
-		<label>ville: </label>
-		<p:inputText name="ville" value="#{gestionClient.client.ville}" />
-		<br />
-		<label>téléphone: </label>
-		<p:inputText name="téléphone"
-			value="#{gestionClient.client.telephone}" />
-		<br />
-		<p:commandButton value="ajouter"
-			actionListener="#{gestionClient.addClient}" update=":panel" />
+		<p:dialog widgetVar="popin" modal="true">
+			<p:panel id="infoClient">
+				<label>Id : </label> #{gestionClient.selectedClient.clientId}
+                   
+				<p:inputText value="#{gestionClient.selectedClient.nom}"
+					validatorMessage="Le nom doit faire au moins 2 caractères">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+				<label>Prenom : </label>
+				<p:inputText value="#{gestionClient.selectedClient.prenom}"
+					validatorMessage="Le prenom doit faire au moins 2 caractères">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+				<label>Adresse : </label>
+				<p:inputText value="#{gestionClient.selectedClient.adresse}"
+					validatorMessage="L'adresse doit faire au moins 2 caractères">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+				<label>Code postal : </label>
+				<p:inputText value="#{gestionClient.selectedClient.codePostal}"
+					validatorMessage="Le code postal doit faire au moins  caractères">
+					<f:validateLength minimum="5" maximum="5" />
+				</p:inputText>
+
+				<p:messages autoUpdate="true" />
+				<p:commandButton value="Appliquer" validateClient="true"
+					actionListener="#{gestionClient.modifierClient}"
+					update=":formulaire:tableauClients" />
+			</p:panel>
+		</p:dialog>
 	</h:form>
 
-
+	<h:form>
+		<p:panel header="Ajouter un client :">
+			<label>Nom : </label>
+			<p:inputText value="#{gestionClient.client.nom}"
+				validatorMessage="Le nom doit faire au moins 2 caractères">
+				<f:validateLength minimum="2" />
+			</p:inputText>
+			<br />
+			<label>Prenom : </label>
+			<p:inputText value="#{gestionClient.client.prenom}"
+				validatorMessage="Le prenom doit faire au moins 2 caractères">
+				<f:validateLength minimum="2" />
+			</p:inputText>
+			<br />
+			<label>Adresse : </label>
+			<p:inputText value="#{gestionClient.client.adresse}"
+				validatorMessage="L'adresse doit faire au moins 2 caractères">
+				<f:validateLength minimum="2" />
+			</p:inputText>
+			<br />
+			<label>Code postal : </label>
+			<p:inputText value="#{gestionClient.client.codePostal}"
+				validatorMessage="Le code postal doit faire au moins  caractères">
+				<f:validateLength minimum="5" maximum="5" />
+			</p:inputText>
+			<br />
+			<p:messages autoUpdate="true" />
+			<p:commandButton value="ajouter"
+				actionListener="#{gestionClient.addClient}"
+				update=":formulaire:tableauClients" validateClient="true" />
+		</p:panel>
+	</h:form>
 
 </h:body>
 
