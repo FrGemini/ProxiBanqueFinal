@@ -2,7 +2,7 @@
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<title>Liste des clients</title>
@@ -10,7 +10,7 @@
 
 <h:body>
 	<p:panel id="listeConseiller" header="Liste des conseillers :">
-		<p:dataTable value="#{gestionConseiller.listeConseillers()}" var="conseiller" border="1">
+		<p:dataTable value="#{gestionConseiller.conseillers}" var="conseiller" border="1">
 
 			<p:column>
 				<f:facet name="header">Id conseiller</f:facet>
@@ -32,21 +32,13 @@
 				#{conseiller.agence}
 			</p:column>
 
-			<p:column>
-				<f:facet name="header">Clients</f:facet>
-				<p:dataTable value="#{testMB.idList}" var="id">
-					<p:column>
-						#{id}
-					</p:column>
-				</p:dataTable>
-
-			</p:column>
+		
 
 			<p:column>
 				<f:facet name="header">Actions</f:facet>
 				<h:form>
 					<p:commandButton value="supprimer" />
-					<p:commandButton value="modifier" />
+					<p:commandButton value="modifier" actionListener="#{gestionConseiller.conseillerParId(conseiller.conseillerId)}" update="@all"/>
 					<p:commandButton value="fiche du conseiller" />
 				</h:form>
 			</p:column>
@@ -57,12 +49,12 @@
 			<f:facet name="header">Ajouter un conseiller :</f:facet>
 
 			<h:outputText value="Nom :" />
-			<p:inputText name="nom" />
+			<p:inputText name="nom" value="#{gestionConseiller.conseiller.nom}"/>
 			<h:outputText value="Prenom :" />
-			<p:inputText name="prénom" />
+			<p:inputText name="prénom" value="#{gestionConseiller.conseiller.prenom}"/>
 			<h:outputText value="Agence :" />
-			<p:inputText name="agence" />
-			<p:commandButton value="ajouter" />
+			<p:inputText name="agence" value="#{gestionConseiller.conseiller.agence}"/>
+			<p:commandButton value="ajouter" actionListener="#{gestionConseiller.ajouter}" update="@all"/>
 			<p:commandButton value="annuler" />
 
 		</p:panelGrid>
@@ -73,11 +65,11 @@
 			<f:facet name="header">Modifier le conseiller selectionné :</f:facet>
 
 			<h:outputText value="Nom :" />
-			<p:inputText name="nom" />
+			<p:inputText name="nom" value="#{gestionConseiller.conseiller.nom}"/>
 			<h:outputText value="Prenom :" />
-			<p:inputText name="prénom" />
+			<p:inputText name="prénom" value="#{gestionConseiller.conseiller.prenom}"/>
 			<h:outputText value="Agence :" />
-			<p:inputText name="agence" />
+			<p:inputText name="agence" value="#{gestionConseiller.conseiller.agence}"/>
 			<p:commandButton value="sauvegarder Modification" />
 			<p:commandButton value="annuler" />
 
