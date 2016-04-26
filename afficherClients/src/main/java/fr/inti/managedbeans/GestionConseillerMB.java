@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import fr.inti.dao.IDaoConseiller;
+import fr.inti.entities.Client;
 import fr.inti.entities.Conseiller;
+import fr.inti.services.IServiceClient;
 import fr.inti.services.IServiceConseiller;
 
 @Controller(value="gestionConseiller")
@@ -17,6 +19,8 @@ import fr.inti.services.IServiceConseiller;
 public class GestionConseillerMB {
 	@Autowired
 	private IServiceConseiller serviceConseiller;
+	
+	private IServiceClient serviceClient;
 	
 	private List<Conseiller> conseillers;
 	private Conseiller conseiller;
@@ -68,4 +72,10 @@ public class GestionConseillerMB {
 		serviceConseiller.modifierConseiller(conseiller);
 		
 	}
+	
+	public List<Client> clientParConseiller(){
+		
+	}
+	
+	
 }
